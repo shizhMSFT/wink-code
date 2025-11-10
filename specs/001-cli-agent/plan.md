@@ -11,7 +11,7 @@ Build a lightweight CLI coding agent named `wink` that connects to local Ollama 
 
 ## Technical Context
 
-**Language/Version**: Go 1.22+ (latest stable for robust CLI tooling and cross-platform support)  
+**Language/Version**: Go 1.25 (latest stable for robust CLI tooling and cross-platform support)  
 **Primary Dependencies**: 
 - Ollama Go SDK or OpenAI Go SDK (for LLM API communication)
 - cobra (CLI framework for command/flag management)
@@ -166,7 +166,7 @@ No violations - all constitution checks passed. No complexity justification requ
 
 **Artifacts Generated**:
 - `research.md` - Technology decisions and best practices
-  - Programming language: Go 1.22+
+  - Programming language: Go 1.25
   - CLI framework: Cobra + Viper
   - LLM integration: OpenAI-compatible SDK for Ollama
   - Session management: JSON file-based storage
@@ -206,7 +206,7 @@ No violations - all constitution checks passed. No complexity justification requ
   - Safety and security guidelines
   - Troubleshooting and CLI reference
 
-- `.github/copilot-instructions.md` - Updated with Go 1.22+ context
+- `.github/copilot-instructions.md` - Updated with Go 1.25 context
 
 **Constitution Re-Check**: ✅ ALL GATES PASSED
 - Code quality tools identified (golangci-lint, gofmt, gocyclo)

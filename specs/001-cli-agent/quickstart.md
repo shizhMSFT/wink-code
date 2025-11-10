@@ -11,7 +11,7 @@ Wink is a lightweight CLI coding agent that connects to local Ollama server for 
 ## Prerequisites
 
 - **Ollama**: Installed and running locally ([installation guide](https://ollama.ai))
-- **Go 1.22+**: For building from source
+- **Go 1.25**: For building from source
 - **Supported Models**: `qwen3-coder:30b` or `qwen3:8b` (default) pulled in Ollama
 
 ## Installation

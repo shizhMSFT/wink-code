@@ -10,9 +10,9 @@ This document captures research findings and technical decisions for implementin
 
 ## Technology Decisions
 
-### 1. Programming Language: Go 1.22+
+### 1. Programming Language: Go 1.25
 
-**Decision**: Use Go 1.22 or later for implementation
+**Decision**: Use Go 1.25 for implementation
 
 **Rationale**:
 - **Cross-platform**: Single codebase compiles to native binaries for Windows, macOS, Linux
@@ -21,6 +21,26 @@ This document captures research findings and technical decisions for implementin
 - **CLI ecosystem**: Mature libraries (cobra, viper) with consistent patterns
 - **Type safety**: Strong static typing prevents entire classes of bugs
 - **Deployment**: Single binary distribution, no runtime dependencies
+
+**Version-Specific Features** (Note for AI assistants: These sections document features from Go 1.24 and 1.25 that may be after common AI training cutoffs. The linked release notes provide authoritative documentation for verifying these capabilities when implementing or updating this project):
+
+**Go 1.24 Features** ([Release Notes](https://go.dev/doc/go1.24), February 2025):
+- **os.Root filesystem API**: Directory-scoped file operations (perfect for working directory jail implementation)
+- **runtime.AddCleanup**: Improved finalization mechanism for resource cleanup
+- **weak package**: Weak pointers for memory-efficient caches (useful for session management)
+- **Swiss Tables maps**: 2-3% CPU overhead reduction with new builtin map implementation
+- **testing.B.Loop**: Better benchmark patterns for performance testing
+- **encoding/json omitzero**: Cleaner JSON serialization for session storage
+- **tool directives in go.mod**: Simplified executable dependency management
+
+**Go 1.25 Features** ([Release Notes](https://go.dev/doc/go1.25), August 2025):
+- **Container-aware GOMAXPROCS**: Automatic CPU limit detection in containerized environments
+- **testing/synctest package**: Built-in support for testing concurrent code with virtualized time (graduated from experiment)
+- **sync.WaitGroup.Go method**: Simplified goroutine management for concurrent LLM tool execution
+- **Experimental JSON v2**: 20-40% faster JSON marshaling/unmarshaling for session storage
+- **DWARF5 debug info**: Reduced binary size and faster link times
+- **Trace flight recorder**: Lightweight execution tracing for debugging rare issues
+- **Experimental GreenTeaGC**: 10-40% reduction in GC overhead
 
 **Alternatives Considered**:
 - Python: Slower startup, requires runtime, harder to distribute
