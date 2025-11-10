@@ -245,6 +245,7 @@ Every tool operation requires approval by default:
 ```
 Tool: run_in_terminal
 Command: git status
+Working directory: /home/user/my-project
 Risk level: dangerous
 
 Approve? (y/n/always):
@@ -252,6 +253,11 @@ Approve? (y/n/always):
   n      - Cancel
   always - Auto-approve similar operations
 ```
+
+**Important**: For `run_in_terminal`, approval is at the **command level**:
+- Each unique command requires separate approval
+- Approving `git status` does NOT auto-approve `git push`
+- Auto-approval rules match the specific command string
 
 ### Auto-Approval Rules
 
@@ -274,6 +280,30 @@ vim ~/.wink/config.json
 - Start with manual approval, add auto-approval as you trust patterns
 - Use specific patterns (e.g., `.*\\.txt$`) instead of wildcards (`.*`)
 - Review rules periodically: `cat ~/.wink/config.json | jq .auto_approval_rules`
+- **For `run_in_terminal`**: Each command creates a separate rule (e.g., "git status" vs "git push")
+
+**Example Rules**:
+```json
+{
+  "auto_approval_rules": [
+    {
+      "tool_name": "read_file",
+      "param_pattern": ".*\\.txt$",
+      "description": "Auto-approve reading .txt files"
+    },
+    {
+      "tool_name": "run_in_terminal",
+      "param_pattern": "^{\"command\":\"git status\".*}$",
+      "description": "Auto-approve 'git status' command only"
+    },
+    {
+      "tool_name": "run_in_terminal",
+      "param_pattern": "^{\"command\":\"npm test\".*}$",
+      "description": "Auto-approve 'npm test' command only"
+    }
+  ]
+}
+```
 
 ## Troubleshooting
 

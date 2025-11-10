@@ -109,6 +109,7 @@ type Session struct {
 - **Productivity**: Auto-approval eliminates repetitive prompts for trusted operations
 - **Transparency**: Show exactly what will be executed before doing it
 - **Flexibility**: Regex patterns allow fine-grained control
+- **Command-level for run_in_terminal**: Shell commands require approval per unique command
 
 **Approval Flow**:
 1. Agent proposes tool call with parameters
@@ -116,6 +117,12 @@ type Session struct {
 3. If no match, prompt user: "Execute [tool] [params]? (y/n/always)"
 4. If "always", generate regex from params and save to config
 5. Execute tool and return result to LLM
+
+**Special Handling for run_in_terminal**:
+- Approval is at the **command level**, not just the tool
+- Each unique command string requires separate approval
+- Prevents dangerous escalation (e.g., approving `git status` doesn't auto-approve `rm -rf /`)
+- Auto-approval rules match against the specific command in parameters
 
 **Config Schema**:
 ```go
@@ -130,6 +137,7 @@ type ApprovalRule struct {
 **Example Rules**:
 - Read all .txt files: `{"tool_name": "read_file", "param_pattern": ".*\\.txt$"}`
 - List any directory: `{"tool_name": "list_dir", "param_pattern": ".*"}`
+- Run git status only: `{"tool_name": "run_in_terminal", "param_pattern": "^{\"command\":\"git status\".*}$"}`
 
 ### 6. Path Security: Working Directory Jail
 

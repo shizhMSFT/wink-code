@@ -171,6 +171,12 @@ Represents an auto-approval rule for tool operations.
 - Pattern MUST NOT match all inputs (prevent blanket approvals)
 - Description MUST NOT be empty
 
+**Special Behavior for run_in_terminal**:
+- Approval is at the **command level**, not just tool level
+- Each unique command requires its own approval rule
+- Pattern must match the specific command in the parameters
+- Example: Approving `git status` creates a rule for that command only
+
 **Example Rules**:
 ```json
 {
@@ -179,6 +185,17 @@ Represents an auto-approval rule for tool operations.
   "param_pattern": "^{\"path\":\".*\\.txt\"}$",
   "description": "Auto-approve reading any .txt file",
   "use_count": 42
+}
+```
+
+**Example run_in_terminal Rules**:
+```json
+{
+  "id": "uuid-456",
+  "tool_name": "run_in_terminal",
+  "param_pattern": "^{\"command\":\"git status\".*}$",
+  "description": "Auto-approve 'git status' command only",
+  "use_count": 15
 }
 ```
 

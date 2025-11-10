@@ -376,6 +376,12 @@ type Tool interface {
 - Command executed in user's default shell
 - Working directory set to session working directory
 
+**Approval Behavior** (SPECIAL):
+- Approval is at the **command level**, not just tool level
+- Each unique command requires separate approval
+- Auto-approval rules match against the specific command string
+- Example: Approving `git status` does NOT auto-approve `git push`
+
 **Success Response**:
 ```json
 {
@@ -386,7 +392,8 @@ type Tool interface {
   "metadata": {
     "exit_code": 0,
     "stdout_lines": 5,
-    "stderr_lines": 0
+    "stderr_lines": 0,
+    "command": "git status"
   }
 }
 ```
@@ -561,6 +568,22 @@ Risk level: safe_write
 Approve? (y/n/always):
 ```
 
+**Special Case - run_in_terminal**:
+For command execution, approval is at the command level:
+```
+Tool: run_in_terminal
+Command: git status
+Working directory: /home/user/project
+Risk level: dangerous
+
+Approve? (y/n/always):
+```
+
+If user selects "always":
+- Auto-approval rule matches the **exact command string**
+- Different commands require separate approvals
+- Example: "git status" ≠ "git push" (separate rules)
+
 ### Auto-Approval Matching
 
 For a tool call to match an approval rule:
@@ -568,11 +591,22 @@ For a tool call to match an approval rule:
 2. Serialized parameters (JSON) must match regex pattern
 3. Rule must not be expired or disabled
 
-Example match:
+**Standard Tool Example**:
 ```
 Rule pattern: ^{"path":".*\\.txt"}$
 Tool call:    {"path":"test.txt"}
 Result:       ✅ Match - auto-approve
+```
+
+**run_in_terminal Special Matching**:
+```
+Rule pattern: ^{"command":"git status".*}$
+Tool call:    {"command":"git status","timeout_seconds":30}
+Result:       ✅ Match - auto-approve
+
+Rule pattern: ^{"command":"git status".*}$
+Tool call:    {"command":"git push origin main","timeout_seconds":30}
+Result:       ❌ No match - prompt for approval
 ```
 
 ### Output Formatting
