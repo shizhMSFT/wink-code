@@ -31,7 +31,33 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### I. Code Quality First
+- [ ] Linting and formatting tools configured for project language
+- [ ] Type hints/annotations strategy defined for public interfaces
+- [ ] Complexity thresholds enforceable (cyclomatic complexity ≤10)
+- [ ] Documentation standards established for public API
+- [ ] Code review process includes quality verification
+
+### II. Testing Standards
+- [ ] TDD workflow confirmed: tests before implementation
+- [ ] Unit test coverage target ≥90% achievable for this feature
+- [ ] Integration test scope identified for contracts/APIs
+- [ ] Edge case scenarios documented
+- [ ] Test isolation and determinism strategy defined
+
+### III. User Experience Consistency
+- [ ] CLI command naming follows project conventions
+- [ ] Error message patterns defined (actionable, no raw traces)
+- [ ] Input/output protocols respect stdin/stdout/stderr separation
+- [ ] Interactive response time ≤2s achievable
+- [ ] User documentation includes examples for all commands
+
+### IV. Performance Requirements
+- [ ] LLM API timeout and retry strategy defined
+- [ ] File operation efficiency considered (streaming/batching)
+- [ ] Memory footprint estimated and within ≤500MB target
+- [ ] Performance-critical paths identified for benchmarking
+- [ ] Token usage optimization planned
 
 ## Project Structure
 

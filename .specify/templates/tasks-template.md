@@ -50,7 +50,10 @@ description: "Task list template for feature implementation"
 
 - [ ] T001 Create project structure per implementation plan
 - [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T003 [P] Configure linting and formatting tools (Constitution: Code Quality First)
+- [ ] T004 [P] Setup type checking configuration (Constitution: Code Quality First)
+- [ ] T005 [P] Configure test framework and coverage reporting (Constitution: Testing Standards)
+- [ ] T006 [P] Setup performance benchmarking infrastructure (Constitution: Performance Requirements)
 
 ---
 
@@ -62,12 +65,13 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T007 Setup database schema and migrations framework
+- [ ] T008 [P] Implement authentication/authorization framework
+- [ ] T009 [P] Setup API routing and middleware structure
+- [ ] T010 Create base models/entities that all stories depend on
+- [ ] T011 Configure error handling and logging infrastructure (Constitution: UX Consistency)
+- [ ] T012 Setup environment configuration management
+- [ ] T013 [P] Implement retry logic and timeout handling for external APIs (Constitution: Performance)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -81,19 +85,22 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation (Constitution: Testing Standards - TDD)**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T014 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T015 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T016 [P] [US1] Unit tests for [component] with edge cases in tests/unit/test_[name].py (≥90% coverage target)
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T017 [P] [US1] Create [Entity1] model in src/models/[entity1].py (with type hints)
+- [ ] T018 [P] [US1] Create [Entity2] model in src/models/[entity2].py (with type hints)
+- [ ] T019 [US1] Implement [Service] in src/services/[service].py (depends on T017, T018)
+- [ ] T020 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T021 [US1] Add validation and error handling (Constitution: UX Consistency - actionable errors)
+- [ ] T022 [US1] Add logging for user story 1 operations (Constitution: UX Consistency)
+- [ ] T023 [US1] Add documentation strings for all public interfaces (Constitution: Code Quality)
+- [ ] T024 [US1] Optimize performance for critical path (Constitution: Performance Requirements)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

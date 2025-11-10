@@ -105,6 +105,7 @@
 <!--
   ACTION REQUIRED: Define measurable success criteria.
   These must be technology-agnostic and measurable.
+  Include quality, testing, UX, and performance criteria per constitution.
 -->
 
 ### Measurable Outcomes
@@ -113,3 +114,13 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+
+### Quality & Performance Criteria *(per constitution)*
+
+- **QC-001**: Code coverage ≥90% with all edge cases tested (Constitution: Testing Standards)
+- **QC-002**: All public APIs documented with examples (Constitution: Code Quality First)
+- **QC-003**: Cyclomatic complexity ≤10 per function (Constitution: Code Quality First)
+- **QC-004**: Interactive response time ≤2 seconds (Constitution: UX Consistency)
+- **QC-005**: Error messages are actionable and user-friendly (Constitution: UX Consistency)
+- **QC-006**: [Performance metric, e.g., "Memory footprint ≤500MB"] (Constitution: Performance Requirements)
+- **QC-007**: [Performance metric, e.g., "CLI startup time ≤500ms"] (Constitution: Performance Requirements)
