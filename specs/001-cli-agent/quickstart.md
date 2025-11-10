@@ -442,6 +442,40 @@ wink-analyze
 wink-test
 ```
 
+### Debug Mode
+
+Enable verbose logging for troubleshooting:
+
+```bash
+# Enable debug output (short form)
+wink -d -p "create a Python script"
+
+# Enable debug output (long form)
+wink --debug -p "create a Python script"
+
+# Debug output shows:
+# - LLM API requests and responses
+# - Tool execution details
+# - Path validation results
+# - Configuration loading
+# - Session state changes
+
+# Example debug output:
+# DEBUG [2025-11-11 10:23:45] LLM API request model=qwen3:8b prompt_length=156 tools_count=10
+# DEBUG [2025-11-11 10:23:47] LLM API response completion_tokens=234 tool_calls=2
+# DEBUG [2025-11-11 10:23:47] Tool execution tool=create_file path=script.py approved=true
+# INFO  [2025-11-11 10:23:47] Tool executed tool=create_file path=script.py status=success
+```
+
+**Use cases for debug mode**:
+- Troubleshooting LLM API connection issues
+- Understanding why a tool wasn't called
+- Debugging auto-approval rule matching
+- Verifying path validation logic
+- Performance analysis (timing information included)
+
+**Note**: Debug output goes to stderr, normal output to stdout (safe for piping)
+
 ### Batch Operations
 
 ```bash

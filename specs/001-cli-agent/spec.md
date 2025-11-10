@@ -142,6 +142,7 @@ A developer needs to reference online documentation or API specifications while 
 - **FR-019**: System MUST allow users to configure LLM API endpoint, API key, and model parameters through environment variables or config file
 - **FR-020**: System MUST timeout LLM API requests after a configurable duration (default 30 seconds) per constitution performance requirements
 - **FR-021**: System MUST accept prompts via `-p` or `--prompt` command-line flag
+- **FR-022**: System MUST support a `-d` or `--debug` flag that enables verbose logging including LLM API requests/responses, tool execution details, and internal state for troubleshooting
 
 ### Key Entities
 

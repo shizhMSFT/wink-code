@@ -41,6 +41,7 @@ This document captures research findings and technical decisions for implementin
 - **DWARF5 debug info**: Reduced binary size and faster link times
 - **Trace flight recorder**: Lightweight execution tracing for debugging rare issues
 - **Experimental GreenTeaGC**: 10-40% reduction in GC overhead
+- **log/slog package**: Structured logging (used for -d/--debug flag implementation)
 
 **Alternatives Considered**:
 - Python: Slower startup, requires runtime, harder to distribute
@@ -68,6 +69,7 @@ rootCmd := &cobra.Command{
 rootCmd.PersistentFlags().StringP("prompt", "p", "", "Natural language prompt")
 rootCmd.PersistentFlags().StringP("model", "m", "qwen3:8b", "LLM model to use")
 rootCmd.PersistentFlags().Bool("continue", false, "Continue previous session")
+rootCmd.PersistentFlags().BoolP("debug", "d", false, "Enable verbose debug logging")
 ```
 
 ### 3. LLM Integration: OpenAI-Compatible SDK
@@ -215,7 +217,57 @@ func FormatUserError(err error) string {
 }
 ```
 
-### 8. Testing Strategy: Table-Driven Tests + Mocks
+### 8. Debug Logging: Structured Logging with Verbosity Control
+
+**Decision**: Use Go's log/slog package with -d/--debug flag for verbose output
+
+**Rationale**:
+- **Standard library**: log/slog is built-in (Go 1.21+), no external dependencies
+- **Structured output**: Key-value pairs for better parsing and filtering
+- **Performance**: Zero-cost when disabled (no string formatting overhead)
+- **Flexibility**: Easy to add different output formats (text, JSON) in future
+- **Constitution compliance**: Debug logs go to stderr, never expose sensitive data
+
+**Implementation Pattern**:
+```go
+var logger *slog.Logger
+
+func InitLogger(debug bool) {
+    opts := &slog.HandlerOptions{
+        Level: slog.LevelInfo,
+    }
+    if debug {
+        opts.Level = slog.LevelDebug
+    }
+    logger = slog.New(slog.NewTextHandler(os.Stderr, opts))
+}
+
+// Usage throughout codebase
+logger.Debug("LLM API request", 
+    "model", model,
+    "prompt_length", len(prompt),
+    "tools_count", len(tools))
+    
+logger.Info("Tool executed",
+    "tool", toolName,
+    "path", sanitizedPath,
+    "approved", approved)
+```
+
+**Debug Information Logged**:
+- LLM API requests (model, prompt, tools available)
+- LLM API responses (completion, tool calls, token usage)
+- Tool execution details (name, parameters, approval status)
+- Path validation results (requested path, resolved path, validation outcome)
+- Configuration loading (file paths, settings loaded)
+- Session state changes (messages added, context pruned)
+
+**Security Considerations**:
+- Sanitize file paths in logs (show relative paths from working dir)
+- Never log API keys or sensitive configuration values
+- Redact potentially sensitive prompt content by default (can be overridden with WINK_DEBUG_FULL_PROMPTS env var)
+
+### 9. Testing Strategy: Table-Driven Tests + Mocks
 
 **Decision**: Use Go's table-driven test pattern with interface-based mocking
 

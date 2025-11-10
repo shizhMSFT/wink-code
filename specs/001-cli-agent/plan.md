@@ -173,6 +173,7 @@ No violations - all constitution checks passed. No complexity justification requ
   - Tool approval: Interactive prompts + regex auto-approval
   - Path security: Working directory jail with validation
   - Error handling: Wrapped errors with user-friendly messages
+  - Debug logging: log/slog with --debug flag for verbose output
   - Testing strategy: Table-driven tests with mocks
   - Performance: Lazy loading + streaming
   - Cross-platform: Platform-specific shell detection
