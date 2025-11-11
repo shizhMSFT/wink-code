@@ -183,13 +183,13 @@
 
 ### Implementation for User Story 6
 
-- [ ] T073 [US6] Implement fetch_webpage tool in internal/tools/web.go with HTTP client, timeout (30s), content extraction per contracts/tools-api.md
-- [ ] T074 [US6] Add robots.txt checking in internal/tools/web.go to respect web scraping ethics
-- [ ] T075 [US6] Add content size limits (100KB) and truncation in internal/tools/web.go to prevent token overflow
-- [ ] T076 [US6] Register fetch_webpage tool in internal/tools/registry.go with dangerous risk level (external network access)
-- [ ] T077 [US6] Add unit tests for web tool in tests/unit/web_tools_test.go: URL validation, timeout, size limits, error handling (≥90% coverage)
-- [ ] T078 [US6] Add integration test in tests/integration/web_test.go using httptest mock server: fetch content, handle errors, verify approval workflow
-- [ ] T079 [US6] Add -d/--debug logging for web requests showing URL, response status, content size, fetch duration
+- [X] T073 [US6] Implement fetch_webpage tool in internal/tools/web.go with HTTP client, timeout (30s), content extraction per contracts/tools-api.md
+- [X] T074 [US6] Add robots.txt checking in internal/tools/web.go to respect web scraping ethics
+- [X] T075 [US6] Add content size limits (100KB) and truncation in internal/tools/web.go to prevent token overflow
+- [X] T076 [US6] Register fetch_webpage tool in internal/tools/registry.go with dangerous risk level (external network access)
+- [X] T077 [US6] Add unit tests for web tool in tests/unit/web_tools_test.go: URL validation, timeout, size limits, error handling (≥90% coverage)
+- [X] T078 [US6] Add integration test in tests/integration/web_test.go using httptest mock server: fetch content, handle errors, verify approval workflow
+- [X] T079 [US6] Add -d/--debug logging for web requests showing URL, response status, content size, fetch duration
 
 **Delivery**: After T079, wink can incorporate online documentation into code generation context.
 

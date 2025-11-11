@@ -183,7 +183,13 @@ func registerTools(a *agent.Agent) error {
 		return fmt.Errorf("failed to register terminal_last_command tool: %w", err)
 	}
 
-	logging.Debug("Registered tools", "count", 9)
+	// Register fetch_webpage tool
+	fetchWebpage := tools.NewFetchWebpageTool()
+	if err := a.RegisterTool(fetchWebpage); err != nil {
+		return fmt.Errorf("failed to register fetch_webpage tool: %w", err)
+	}
+
+	logging.Debug("Registered tools", "count", 10)
 
 	return nil
 }

@@ -78,7 +78,8 @@ func (r *Registry) Execute(ctx context.Context, toolName string, params map[stri
 	// Execute tool
 	result, err := tool.Execute(ctx, params, workingDir)
 	if err != nil {
-		return nil, fmt.Errorf("execution failed: %w", err)
+		// Return result even on error (it may contain useful metadata)
+		return result, fmt.Errorf("execution failed: %w", err)
 	}
 
 	return result, nil

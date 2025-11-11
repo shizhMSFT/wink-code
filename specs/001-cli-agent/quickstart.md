@@ -350,6 +350,56 @@ wink -p "run long script.sh"
 
 ## Troubleshooting
 
+### Web Content Fetching Safety
+
+When using `fetch_webpage`:
+
+**✅ Allowed URLs**:
+- HTTP and HTTPS only: `http://example.com`, `https://api.example.com`
+- Respects robots.txt: Will check and block access to disallowed paths
+
+**⚠️ Blocked URLs**:
+- Local file access: `file:///etc/passwd` (rejected by validation)
+- JavaScript execution: `javascript:alert(1)` (rejected by validation)
+- FTP and other protocols: `ftp://server.com` (rejected by validation)
+
+**Built-in Protections**:
+- **robots.txt Checking**: Automatically fetches and respects robots.txt before accessing URLs
+- **Content Size Limits**: Truncates responses at 1MB to prevent memory exhaustion
+- **Timeout Control**: Default 10s timeout (configurable 1-60s via `timeout_seconds` parameter)
+- **Requires Approval**: Always requires user confirmation (cannot be auto-approved currently)
+
+**Example Usage**:
+```bash
+# Fetch webpage content
+wink -p "fetch https://example.com"
+
+# With custom timeout for slow servers
+wink -p "fetch https://slow-server.com with 30 second timeout"
+
+# API endpoint (JSON responses supported)
+wink -p "get data from https://api.github.com/repos/golang/go"
+```
+
+**Debug Logging**:
+- Enable with `WINK_DEBUG=1` or `--debug` flag
+- Shows URL being fetched, timeout settings
+- Logs robots.txt checks and access decisions
+- Reports content truncation if response exceeds 1MB
+
+**robots.txt Example**:
+```
+User-agent: *
+Disallow: /admin
+Disallow: /private
+
+# wink will automatically respect these rules
+# https://example.com/admin → Blocked by robots.txt
+# https://example.com/public → Allowed
+```
+
+## Troubleshooting
+
 ### Ollama Connection Failed
 
 ```bash
