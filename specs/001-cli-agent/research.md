@@ -355,6 +355,146 @@ func ExecuteCommand(cmdStr string) (string, error) {
 }
 ```
 
+### 11. Timeout Configuration
+
+**Decision**: Support configurable timeout via `--timeout` flag and `WINK_TIMEOUT` environment variable
+
+**Rationale**:
+- **Flexibility**: Different models and prompts require different timeout durations
+- **Complex requests**: Some code generation tasks need >30 seconds (e.g., detailed implementations)
+- **User control**: Users know their environment and can adjust accordingly
+- **Precedence**: CLI flag > Environment variable > Config file > Default (30s)
+
+**Implementation**:
+```go
+// In cmd/wink/main.go
+rootCmd.PersistentFlags().IntVar(&timeoutFlag, "timeout", 30, 
+    "LLM API request timeout in seconds (default: 30)")
+
+// Read from environment if flag not set
+timeout := timeoutFlag
+if timeout == 30 { // Default value, check env var
+    if envTimeout := os.Getenv("WINK_TIMEOUT"); envTimeout != "" {
+        if t, err := strconv.Atoi(envTimeout); err == nil && t > 0 {
+            timeout = t
+        }
+    }
+}
+
+// Validate reasonable range
+if timeout < 5 {
+    return fmt.Errorf("timeout must be at least 5 seconds")
+}
+if timeout > 300 {
+    logging.Warn("Timeout >300 seconds may cause long waits", "timeout", timeout)
+}
+```
+
+**Usage Examples**:
+```bash
+# Use 60 second timeout for complex requests
+wink -p "create a complete REST API with authentication" --timeout 60
+
+# Set default via environment variable
+export WINK_TIMEOUT=90
+wink -p "analyze this large codebase"
+
+# Quick timeout for testing
+wink -p "hello world" --timeout 10
+```
+
+### 12. Progress Indicators for Long Operations
+
+**Decision**: Display animated progress indicator during LLM API calls >2 seconds
+
+**Rationale**:
+- **User feedback**: Long waits without feedback feel like hangs
+- **Reassurance**: Show the system is working, not frozen
+- **Elapsed time**: Help users understand how long operations actually take
+- **Cancellable**: Give users opportunity to Ctrl+C if taking too long
+
+**Implementation Options**:
+
+**Option A: Simple Spinner (Chosen)**
+```go
+// In internal/ui/progress.go
+type Spinner struct {
+    chars   []rune
+    index   int
+    ticker  *time.Ticker
+    done    chan bool
+    message string
+}
+
+func NewSpinner(message string) *Spinner {
+    return &Spinner{
+        chars:   []rune{'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'},
+        message: message,
+        done:    make(chan bool),
+    }
+}
+
+func (s *Spinner) Start() {
+    s.ticker = time.NewTicker(100 * time.Millisecond)
+    go func() {
+        for {
+            select {
+            case <-s.done:
+                return
+            case <-s.ticker.C:
+                fmt.Fprintf(os.Stderr, "\r%c %s (%.1fs)", 
+                    s.chars[s.index], s.message, time.Since(startTime).Seconds())
+                s.index = (s.index + 1) % len(s.chars)
+            }
+        }
+    }()
+}
+
+func (s *Spinner) Stop() {
+    s.ticker.Stop()
+    s.done <- true
+    fmt.Fprintf(os.Stderr, "\r") // Clear the line
+}
+```
+
+**Option B: Progress Bar with Estimated Time**
+- Harder to estimate completion for LLM calls (non-deterministic)
+- Better suited for file operations with known size
+
+**Usage Pattern**:
+```go
+// In internal/llm/client.go ChatCompletion method
+spinner := ui.NewSpinner("Waiting for LLM response...")
+spinner.Start()
+defer spinner.Stop()
+
+// Make API call
+resp, err := c.client.CreateChatCompletion(ctx, req)
+```
+
+**Display Example**:
+```
+⠹ Waiting for LLM response... (5.3s)
+```
+
+**Cross-Platform Considerations**:
+- Use Unicode spinner chars (work on Windows Terminal, macOS, Linux)
+- Fallback to ASCII dots for legacy terminals: `...`
+- Detect terminal capability: `isatty.IsTerminal(os.Stderr.Fd())`
+- Disable in non-interactive mode (pipes, redirects)
+
+**Performance Impact**:
+- Minimal: 100ms update frequency, goroutine overhead negligible
+- Only active during LLM calls (blocked on network anyway)
+- No impact on actual LLM performance
+
+**User Experience**:
+- Shows activity immediately (no 2-second delay to start showing)
+- Updates frequently enough to feel responsive
+- Displays elapsed time so users can gauge if timeout is needed
+- Clears cleanly when LLM responds
+- Works with debug logging (-d flag doesn't interfere)
+
 ## Best Practices Applied
 
 ### Go Project Organization

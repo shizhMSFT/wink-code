@@ -109,6 +109,9 @@ A developer needs to reference online documentation or API specifications while 
 ### Edge Cases
 
 - What happens when the LLM API is unreachable or times out?
+- How does the system handle LLM requests that exceed the configured timeout?
+- What happens when a user configures an unreasonably short timeout (e.g., 1 second)?
+- How does the progress indicator behave when LLM responds very quickly (under 2 seconds)?
 - How does the system handle file operations when the target path doesn't exist or isn't writable?
 - What happens when a user's natural language request is too ambiguous to execute?
 - How does the tool behave when the current working directory changes during execution?
@@ -143,6 +146,11 @@ A developer needs to reference online documentation or API specifications while 
 - **FR-020**: System MUST timeout LLM API requests after a configurable duration (default 30 seconds) per constitution performance requirements
 - **FR-021**: System MUST accept prompts via `-p` or `--prompt` command-line flag
 - **FR-022**: System MUST support a `-d` or `--debug` flag that enables verbose logging including LLM API requests/responses, tool execution details, and internal state for troubleshooting
+- **FR-023**: System MUST support a `--timeout` flag that allows users to configure LLM API request timeout duration in seconds
+- **FR-024**: System MUST support `WINK_TIMEOUT` environment variable as an alternative to `--timeout` flag for configuring timeout duration
+- **FR-025**: System MUST display a progress indicator when waiting for LLM API responses that take longer than 2 seconds
+- **FR-026**: Progress indicator MUST show elapsed time and indicate ongoing activity (e.g., spinner, animated dots, or progress bar)
+- **FR-027**: Progress indicator MUST update at least once per second to provide responsive feedback to the user
 
 ### Key Entities
 

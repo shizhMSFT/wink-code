@@ -127,7 +127,8 @@ wink-code/
 │   │   └── approval.go       # Auto-approval rule management
 │   └── ui/
 │       ├── prompt.go         # User prompts and input handling
-│       └── output.go         # Output formatting (JSON/human-readable)
+│       ├── output.go         # Output formatting (JSON/human-readable)
+│       └── progress.go       # Progress indicators for long operations
 ├── pkg/
 │   └── types/
 │       ├── tool.go           # Tool operation types
