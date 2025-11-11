@@ -113,6 +113,11 @@ func (c *Client) ChatCompletion(ctx context.Context, messages []types.Message, t
 	return &resp, nil
 }
 
+// Model returns the model name being used
+func (c *Client) Model() string {
+	return c.model
+}
+
 // mustMarshalJSON marshals to JSON string, panics on error (should never happen with valid data)
 func mustMarshalJSON(v interface{}) string {
 	// OpenAI SDK expects JSON string

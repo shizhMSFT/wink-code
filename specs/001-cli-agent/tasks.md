@@ -69,12 +69,12 @@
 
 ### Implementation for User Story 1
 
-- [ ] T024 [US1] Implement create_file tool in internal/tools/file.go with path validation, content writing, error handling per contracts/tools-api.md
-- [ ] T025 [US1] Register create_file tool in internal/tools/registry.go with name, description, parameters schema
-- [ ] T026 [US1] Implement approval workflow in internal/tools/approval.go: check auto-approval rules, prompt user, handle yes/no/always responses
-- [ ] T027 [US1] Implement internal/agent/agent.go core orchestration: accept prompt, call LLM with tools, handle tool calls, return results
-- [ ] T028 [US1] Wire up cobra command in cmd/wink/main.go to call agent with prompt from -p flag
-- [ ] T029 [US1] Add integration test in tests/integration/quick_script_test.go for end-to-end script generation workflow
+- [X] T024 [US1] Implement create_file tool in internal/tools/file.go with path validation, content writing, error handling per contracts/tools-api.md
+- [X] T025 [US1] Register create_file tool in internal/tools/registry.go with name, description, parameters schema
+- [X] T026 [US1] Implement approval workflow in internal/tools/approval.go: check auto-approval rules, prompt user, handle yes/no/always responses
+- [X] T027 [US1] Implement internal/agent/agent.go core orchestration: accept prompt, call LLM with tools, handle tool calls, return results
+- [X] T028 [US1] Wire up cobra command in cmd/wink/main.go to call agent with prompt from -p flag
+- [X] T029 [US1] Add integration test in tests/integration/quick_script_test.go for end-to-end script generation workflow
 - [ ] T030 [US1] Add error handling for LLM unreachable, invalid prompts, file creation failures with user-friendly messages (Constitution: UX Consistency)
 - [ ] T031 [US1] Validate startup time ≤500ms and tool execution overhead <100ms with benchmarks in tests/integration/benchmark_test.go (Constitution: Performance)
 

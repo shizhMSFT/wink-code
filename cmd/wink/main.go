@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/shizhMSFT/wink-code/internal/agent"
 	"github.com/shizhMSFT/wink-code/internal/logging"
+	"github.com/shizhMSFT/wink-code/internal/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -71,20 +73,48 @@ func run(cmd *cobra.Command, args []string) error {
 
 	logging.Debug("Working directory", "path", workingDir)
 
-	// TODO: Implement agent logic
-	// This is where we'll:
-	// 1. Load/create session
-	// 2. Initialize LLM client
-	// 3. Register tools
-	// 4. Run agent orchestration loop
-	// 5. Handle approvals and tool execution
+	// Get configuration (use defaults for now, TODO: load from config file)
+	ollamaURL := os.Getenv("WINK_OLLAMA_URL")
+	if ollamaURL == "" {
+		ollamaURL = "http://localhost:11434"
+	}
 
-	fmt.Fprintln(os.Stderr, "Wink CLI is not yet fully implemented.")
-	fmt.Fprintf(os.Stderr, "Prompt: %s\n", promptFlag)
-	fmt.Fprintf(os.Stderr, "Model: %s\n", modelFlag)
-	fmt.Fprintf(os.Stderr, "Continue: %v\n", continueFlag)
-	fmt.Fprintf(os.Stderr, "Debug: %v\n", debugFlag)
-	fmt.Fprintf(os.Stderr, "Working Dir: %s\n", workingDir)
+	model := modelFlag
+	if envModel := os.Getenv("WINK_MODEL"); envModel != "" {
+		model = envModel
+	}
+
+	timeoutSeconds := 30
+
+	// Create agent
+	agentInstance, err := agent.NewAgent(ollamaURL, model, timeoutSeconds)
+	if err != nil {
+		return fmt.Errorf("failed to create agent: %w", err)
+	}
+
+	// Register tools
+	if err := registerTools(agentInstance); err != nil {
+		return fmt.Errorf("failed to register tools: %w", err)
+	}
+
+	// Run agent
+	ctx := cmd.Context()
+	if err := agentInstance.Run(ctx, promptFlag, workingDir, continueFlag); err != nil {
+		return fmt.Errorf("agent execution failed: %w", err)
+	}
+
+	return nil
+}
+
+// registerTools registers all available tools with the agent
+func registerTools(a *agent.Agent) error {
+	// Register create_file tool
+	createFile := tools.NewCreateFileTool()
+	if err := a.RegisterTool(createFile); err != nil {
+		return fmt.Errorf("failed to register create_file tool: %w", err)
+	}
+
+	logging.Debug("Registered tools", "count", 1)
 
 	return nil
 }
