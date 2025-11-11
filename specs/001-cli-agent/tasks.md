@@ -104,9 +104,9 @@
 - [X] T043 [P] [US2] Implement list_dir tool in internal/tools/directory.go with formatting, pagination for >1000 files per contracts/tools-api.md
 - [X] T044 [US2] Register all file/directory tools (read_file, replace_string_in_file, create_directory, list_dir) in internal/tools/registry.go
 - [X] T045 [US2] Update approval workflow in internal/tools/approval.go to show clear operation details (tool name, path, action) per FR-004
-- [ ] T046 [US2] Add unit tests for each file tool in tests/unit/file_tools_test.go with table-driven tests covering success, path escape, permission errors (≥90% coverage)
-- [ ] T047 [US2] Add integration test in tests/integration/file_operations_test.go for multi-operation workflows with approval prompts
-- [ ] T048 [US2] Implement -d/--debug flag logging for file operations showing paths, sizes, approval status in internal/tools/file.go
+- [X] T046 [US2] Add unit tests for each file tool in tests/unit/file_tools_test.go with table-driven tests covering success, path escape, permission errors (≥90% coverage)
+- [X] T047 [US2] Add integration test in tests/integration/file_operations_test.go for multi-operation workflows with approval prompts
+- [X] T048 [US2] Implement -d/--debug flag logging for file operations showing paths, sizes, approval status in internal/tools/file.go
 
 **Delivery**: After T048, wink supports comprehensive file operations with transparent approval workflow.
 
