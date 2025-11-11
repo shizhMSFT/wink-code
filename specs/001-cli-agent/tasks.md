@@ -24,12 +24,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Go module with `go mod init github.com/shizhMSFT/wink-code` in repository root
-- [ ] T002 [P] Create directory structure: cmd/wink/, internal/agent/, internal/llm/, internal/tools/, internal/config/, internal/ui/, pkg/types/, tests/unit/, tests/integration/
-- [ ] T003 [P] Configure golangci-lint with .golangci.yml (cyclomatic complexity ≤10, gofmt, goimports)
-- [ ] T004 [P] Create Makefile with build, test, lint, install targets
-- [ ] T005 [P] Setup GitHub Actions CI workflow in .github/workflows/ci.yml (lint, test, build for Linux/Windows/macOS)
-- [ ] T006 [P] Create README.md with installation and quick start instructions
+- [X] T001 Initialize Go module with `go mod init github.com/shizhMSFT/wink-code` in repository root
+- [X] T002 [P] Create directory structure: cmd/wink/, internal/agent/, internal/llm/, internal/tools/, internal/config/, internal/ui/, pkg/types/, tests/unit/, tests/integration/
+- [X] T003 [P] Configure golangci-lint with .golangci.yml (cyclomatic complexity ≤10, gofmt, goimports)
+- [X] T004 [P] Create Makefile with build, test, lint, install targets
+- [X] T005 [P] Setup GitHub Actions CI workflow in .github/workflows/ci.yml (lint, test, build for Linux/Windows/macOS)
+- [X] T006 [P] Create README.md with installation and quick start instructions
 
 ---
 
@@ -39,23 +39,23 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Install core dependencies: cobra, viper, OpenAI Go SDK in go.mod
-- [ ] T008 [P] Create pkg/types/tool.go with Tool interface, ToolResult, RiskLevel enums
-- [ ] T009 [P] Create pkg/types/session.go with Session, Message structs matching data-model.md
-- [ ] T010 [P] Create pkg/types/approval.go with ApprovalRule, ToolCall structs
-- [ ] T011 [P] Create pkg/types/config.go with Config struct
-- [ ] T012 Implement internal/config/config.go for loading/saving config from ~/.wink/config.json with viper
-- [ ] T013 [P] Implement internal/config/approval.go for auto-approval rule management (add, match, persist)
-- [ ] T014 Implement internal/ui/prompt.go for user approval prompts (yes/no/always) with stdin/stdout
-- [ ] T015 [P] Implement internal/ui/output.go for formatted output (human-readable and JSON modes)
-- [ ] T016 Implement debug logging initialization in internal/logging/logger.go using log/slog with -d/--debug flag support
-- [ ] T017 Implement path validation in internal/tools/security.go for working directory jail (ValidatePath function)
-- [ ] T018 Implement internal/llm/client.go with OpenAI SDK pointing to Ollama base URL http://localhost:11434/v1
-- [ ] T019 [P] Implement internal/llm/retry.go with exponential backoff (3 retries, 30s timeout per constitution)
-- [ ] T020 Create internal/tools/registry.go with tool registration and dispatch logic
-- [ ] T021 [P] Implement internal/agent/session.go for session persistence to ~/.wink/sessions/{id}.json
-- [ ] T022 [P] Implement internal/agent/context.go for conversation context management (100 message limit)
-- [ ] T023 Implement cmd/wink/main.go with cobra root command, -p/--prompt, -m/--model, --continue, -d/--debug flags
+- [X] T007 Install core dependencies: cobra, viper, OpenAI Go SDK in go.mod
+- [X] T008 [P] Create pkg/types/tool.go with Tool interface, ToolResult, RiskLevel enums
+- [X] T009 [P] Create pkg/types/session.go with Session, Message structs matching data-model.md
+- [X] T010 [P] Create pkg/types/approval.go with ApprovalRule, ToolCall structs
+- [X] T011 [P] Create pkg/types/config.go with Config struct
+- [X] T012 Implement internal/config/config.go for loading/saving config from ~/.wink/config.json with viper
+- [X] T013 [P] Implement internal/config/approval.go for auto-approval rule management (add, match, persist)
+- [X] T014 Implement internal/ui/prompt.go for user approval prompts (yes/no/always) with stdin/stdout
+- [X] T015 [P] Implement internal/ui/output.go for formatted output (human-readable and JSON modes)
+- [X] T016 Implement debug logging initialization in internal/logging/logger.go using log/slog with -d/--debug flag support
+- [X] T017 Implement path validation in internal/tools/security.go for working directory jail (ValidatePath function)
+- [X] T018 Implement internal/llm/client.go with OpenAI SDK pointing to Ollama base URL http://localhost:11434/v1
+- [X] T019 [P] Implement internal/llm/retry.go with exponential backoff (3 retries, 30s timeout per constitution)
+- [X] T020 Create internal/tools/registry.go with tool registration and dispatch logic
+- [X] T021 [P] Implement internal/agent/session.go for session persistence to ~/.wink/sessions/{id}.json
+- [X] T022 [P] Implement internal/agent/context.go for conversation context management (100 message limit)
+- [X] T023 Implement cmd/wink/main.go with cobra root command, -p/--prompt, -m/--model, --continue, -d/--debug flags
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
