@@ -8,6 +8,7 @@ import (
 	"github.com/shizhMSFT/wink-code/internal/config"
 	"github.com/shizhMSFT/wink-code/internal/logging"
 	"github.com/shizhMSFT/wink-code/internal/ui"
+	"github.com/shizhMSFT/wink-code/pkg/types"
 )
 
 // ApprovalWorkflow handles tool execution approval
@@ -29,7 +30,7 @@ func NewApprovalWorkflow() (*ApprovalWorkflow, error) {
 
 // CheckApproval checks if a tool call should be approved
 // Returns: (approved bool, autoApproved bool, ruleDescription string, error)
-func (aw *ApprovalWorkflow) CheckApproval(toolName string, params map[string]interface{}) (bool, bool, string, error) {
+func (aw *ApprovalWorkflow) CheckApproval(toolName string, params map[string]interface{}, tool types.Tool) (bool, bool, string, error) {
 	// Check auto-approval rules
 	rule, err := aw.approvalManager.MatchRule(toolName, params)
 	if err != nil {
@@ -48,7 +49,7 @@ func (aw *ApprovalWorkflow) CheckApproval(toolName string, params map[string]int
 	}
 
 	// Prompt user for approval
-	response, err := ui.PromptForApproval(toolName, params)
+	response, err := ui.PromptForApproval(toolName, params, tool)
 	if err != nil {
 		return false, false, "", fmt.Errorf("failed to get approval: %w", err)
 	}

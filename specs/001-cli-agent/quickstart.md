@@ -342,10 +342,33 @@ wink -m qwen3:8b -p "simple task"
 # Check Ollama resource usage
 ollama ps
 
-# Increase timeout for complex tasks
+# Increase timeout for complex tasks (via flag)
+wink --timeout 60 -p "complex analysis task"
+
+# Or set via environment variable
 export WINK_TIMEOUT=60
 wink -p "complex analysis task"
+
+# Flag takes precedence over environment variable
+export WINK_TIMEOUT=45
+wink --timeout 60 -p "task"  # Uses 60s, not 45s
+
+# Minimum timeout is 5 seconds
+wink --timeout 3 -p "task"  # Error: timeout must be at least 5 seconds
+
+# High timeouts (>300s) generate a warning
+wink --timeout 600 -p "task"  # Warning: Timeout is very high
 ```
+
+**Timeout Configuration**:
+- **Default**: 30 seconds
+- **Minimum**: 5 seconds (enforced)
+- **Maximum**: No hard limit, but values >300s generate a warning
+- **Precedence**: `--timeout` flag > `WINK_TIMEOUT` env var > default (30s)
+- **Use cases**: 
+  - Increase for complex code generation or large file analysis
+  - Decrease for simple queries with fast models
+  - Keep at default for typical usage
 
 ### Session Not Continuing
 
@@ -380,6 +403,8 @@ wink -p "read ../other-project/file.py"  # ❌ Outside working dir
 -p, --prompt string      Natural language prompt (required)
 -m, --model string       LLM model name (default: "qwen3:8b")
     --continue           Continue previous session
+    --timeout int        LLM API timeout in seconds (default: 30, min: 5)
+-d, --debug              Enable verbose debug logging
     --json               Output in JSON format
 -h, --help              Show help
 -v, --version           Show version
@@ -397,8 +422,17 @@ wink -m qwen3-coder:30b -p "complex code generation"
 # Continue session
 wink --continue -p "add more features"
 
+# Custom timeout for long operations
+wink --timeout 60 -p "analyze entire codebase"
+
+# Debug mode
+wink -d -p "investigate issue"
+
 # JSON output
 wink --json -p "read config.json"
+
+# Combine multiple flags
+wink -m qwen3-coder:30b --timeout 90 -d -p "complex task"
 ```
 
 ## Development Workflow

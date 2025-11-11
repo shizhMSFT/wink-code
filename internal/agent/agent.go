@@ -234,8 +234,14 @@ func (a *Agent) executeToolCall(ctx context.Context, session *types.Session, too
 		"tool_call_id", toolCall.ID,
 	)
 
+	// Get tool object
+	tool, err := a.toolRegistry.Get(toolCall.ToolName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tool: %w", err)
+	}
+
 	// Check approval
-	approved, autoApproved, ruleDescription, err := a.approvalWorkflow.CheckApproval(toolCall.ToolName, toolCall.Parameters)
+	approved, autoApproved, ruleDescription, err := a.approvalWorkflow.CheckApproval(toolCall.ToolName, toolCall.Parameters, tool)
 	if err != nil {
 		return nil, fmt.Errorf("approval check failed: %w", err)
 	}

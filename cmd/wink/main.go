@@ -23,6 +23,7 @@ var (
 	modelFlag    string
 	continueFlag bool
 	debugFlag    bool
+	timeoutFlag  int
 )
 
 func main() {
@@ -44,6 +45,7 @@ integration with a safe approval workflow.`,
 	rootCmd.Flags().StringVarP(&modelFlag, "model", "m", "qwen3:8b", "LLM model to use")
 	rootCmd.Flags().BoolVar(&continueFlag, "continue", false, "Continue previous session")
 	rootCmd.Flags().BoolVarP(&debugFlag, "debug", "d", false, "Enable verbose debug logging")
+	rootCmd.Flags().IntVar(&timeoutFlag, "timeout", 30, "LLM API timeout in seconds (default: 30s, min: 5s)")
 
 	// Mark prompt as required (unless --continue is used)
 	rootCmd.MarkFlagRequired("prompt")
@@ -84,7 +86,26 @@ func run(cmd *cobra.Command, args []string) error {
 		model = envModel
 	}
 
-	timeoutSeconds := 30
+	// Determine timeout with precedence: flag > env > default
+	timeoutSeconds := timeoutFlag
+	if envTimeout := os.Getenv("WINK_TIMEOUT"); envTimeout != "" && timeoutFlag == 30 {
+		// Only use env var if flag was not explicitly set (still at default)
+		var timeout int
+		_, err := fmt.Sscanf(envTimeout, "%d", &timeout)
+		if err == nil && timeout >= 5 {
+			timeoutSeconds = timeout
+		}
+	}
+
+	// Validate timeout
+	if timeoutSeconds < 5 {
+		return fmt.Errorf("timeout must be at least 5 seconds, got %d", timeoutSeconds)
+	}
+	if timeoutSeconds > 300 {
+		logging.Warn("Timeout is very high", "timeout", timeoutSeconds, "recommended_max", 300)
+	}
+
+	logging.Debug("Configuration", "model", model, "timeout", timeoutSeconds, "ollama_url", ollamaURL)
 
 	// Create agent
 	agentInstance, err := agent.NewAgent(ollamaURL, model, timeoutSeconds)
@@ -114,7 +135,31 @@ func registerTools(a *agent.Agent) error {
 		return fmt.Errorf("failed to register create_file tool: %w", err)
 	}
 
-	logging.Debug("Registered tools", "count", 1)
+	// Register read_file tool
+	readFile := tools.NewReadFileTool()
+	if err := a.RegisterTool(readFile); err != nil {
+		return fmt.Errorf("failed to register read_file tool: %w", err)
+	}
+
+	// Register replace_string_in_file tool
+	replaceString := tools.NewReplaceStringInFileTool()
+	if err := a.RegisterTool(replaceString); err != nil {
+		return fmt.Errorf("failed to register replace_string_in_file tool: %w", err)
+	}
+
+	// Register create_directory tool
+	createDir := tools.NewCreateDirectoryTool()
+	if err := a.RegisterTool(createDir); err != nil {
+		return fmt.Errorf("failed to register create_directory tool: %w", err)
+	}
+
+	// Register list_dir tool
+	listDir := tools.NewListDirTool()
+	if err := a.RegisterTool(listDir); err != nil {
+		return fmt.Errorf("failed to register list_dir tool: %w", err)
+	}
+
+	logging.Debug("Registered tools", "count", 5)
 
 	return nil
 }

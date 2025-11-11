@@ -77,14 +77,14 @@
 - [X] T029 [US1] Add integration test in tests/integration/quick_script_test.go for end-to-end script generation workflow
 - [X] T030 [US1] Add error handling for LLM unreachable, invalid prompts, file creation failures with user-friendly messages (Constitution: UX Consistency)
 - [X] T031 [US1] Validate startup time ≤500ms and tool execution overhead <100ms with benchmarks in tests/integration/benchmark_test.go (Constitution: Performance)
-- [ ] T032 [US1] Add --timeout flag to cmd/wink/main.go to configure LLM API timeout duration (default: 30s, min: 5s, warn if >300s)
-- [ ] T033 [US1] Add WINK_TIMEOUT environment variable support with precedence: flag > env > default
-- [ ] T034 [US1] Implement progress indicator in internal/ui/progress.go with spinner animation and elapsed time display
-- [ ] T035 [US1] Integrate progress indicator in internal/llm/client.go to show during LLM API calls
-- [ ] T036 [US1] Add terminal capability detection to disable spinner in non-TTY environments (pipes, redirects)
-- [ ] T037 [US1] Add unit tests for timeout configuration in tests/unit/timeout_test.go covering flag, env var, validation
-- [ ] T038 [US1] Add unit tests for progress indicator in tests/unit/progress_test.go covering start, stop, update cycle
-- [ ] T039 [US1] Update quickstart.md with timeout flag documentation and usage examples
+- [X] T032 [US1] Add --timeout flag to cmd/wink/main.go to configure LLM API timeout duration (default: 30s, min: 5s, warn if >300s)
+- [X] T033 [US1] Add WINK_TIMEOUT environment variable support with precedence: flag > env > default
+- [X] T034 [US1] Implement progress indicator in internal/ui/progress.go with spinner animation and elapsed time display
+- [X] T035 [US1] Integrate progress indicator in internal/llm/client.go to show during LLM API calls
+- [X] T036 [US1] Add terminal capability detection to disable spinner in non-TTY environments (pipes, redirects)
+- [X] T037 [US1] Add unit tests for timeout configuration in tests/unit/timeout_test.go covering flag, env var, validation
+- [X] T038 [US1] Add unit tests for progress indicator in tests/unit/progress_test.go covering start, stop, update cycle
+- [X] T039 [US1] Update quickstart.md with timeout flag documentation and usage examples
 
 **MVP Delivery**: After T039, wink has configurable timeouts and user-friendly progress feedback for long operations.
 
@@ -98,12 +98,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T040 [P] [US2] Implement read_file tool in internal/tools/file.go with line range support, size limits (10MB), error handling per contracts/tools-api.md
-- [ ] T041 [P] [US2] Implement replace_string_in_file tool in internal/tools/file.go with exact string matching, validation per contracts/tools-api.md
-- [ ] T042 [P] [US2] Implement create_directory tool in internal/tools/directory.go with recursive creation, path validation per contracts/tools-api.md
-- [ ] T043 [P] [US2] Implement list_dir tool in internal/tools/directory.go with formatting, pagination for >1000 files per contracts/tools-api.md
-- [ ] T044 [US2] Register all file/directory tools (read_file, replace_string_in_file, create_directory, list_dir) in internal/tools/registry.go
-- [ ] T045 [US2] Update approval workflow in internal/tools/approval.go to show clear operation details (tool name, path, action) per FR-004
+- [X] T040 [P] [US2] Implement read_file tool in internal/tools/file.go with line range support, size limits (10MB), error handling per contracts/tools-api.md
+- [X] T041 [P] [US2] Implement replace_string_in_file tool in internal/tools/file.go with exact string matching, validation per contracts/tools-api.md
+- [X] T042 [P] [US2] Implement create_directory tool in internal/tools/directory.go with recursive creation, path validation per contracts/tools-api.md
+- [X] T043 [P] [US2] Implement list_dir tool in internal/tools/directory.go with formatting, pagination for >1000 files per contracts/tools-api.md
+- [X] T044 [US2] Register all file/directory tools (read_file, replace_string_in_file, create_directory, list_dir) in internal/tools/registry.go
+- [X] T045 [US2] Update approval workflow in internal/tools/approval.go to show clear operation details (tool name, path, action) per FR-004
 - [ ] T046 [US2] Add unit tests for each file tool in tests/unit/file_tools_test.go with table-driven tests covering success, path escape, permission errors (≥90% coverage)
 - [ ] T047 [US2] Add integration test in tests/integration/file_operations_test.go for multi-operation workflows with approval prompts
 - [ ] T048 [US2] Implement -d/--debug flag logging for file operations showing paths, sizes, approval status in internal/tools/file.go

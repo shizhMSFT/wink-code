@@ -3,9 +3,12 @@ package ui
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/shizhMSFT/wink-code/pkg/types"
 )
 
 // ApprovalResponse represents the user's approval decision
@@ -21,20 +24,38 @@ const (
 )
 
 // PromptForApproval asks the user to approve a tool operation
-func PromptForApproval(toolName string, params map[string]interface{}) (ApprovalResponse, error) {
+func PromptForApproval(toolName string, params map[string]interface{}, tool types.Tool) (ApprovalResponse, error) {
 	// Display operation details to stderr (keeps stdout clean)
 	fmt.Fprintf(os.Stderr, "\n┌─────────────────────────────────────────┐\n")
 	fmt.Fprintf(os.Stderr, "│ Tool Approval Required                  │\n")
 	fmt.Fprintf(os.Stderr, "├─────────────────────────────────────────┤\n")
 	fmt.Fprintf(os.Stderr, "│ Tool: %-34s │\n", toolName)
 
-	// Display parameters
+	// Show risk level with color coding
+	riskLevel := tool.RiskLevel()
+	riskStr := formatRiskLevel(riskLevel)
+	fmt.Fprintf(os.Stderr, "│ Risk Level: %-28s │\n", riskStr)
+
+	fmt.Fprintf(os.Stderr, "├─────────────────────────────────────────┤\n")
+	fmt.Fprintf(os.Stderr, "│ Parameters:                             │\n")
+
+	// Display parameters more nicely
 	for key, value := range params {
-		valueStr := fmt.Sprintf("%v", value)
-		if len(valueStr) > 30 {
-			valueStr = valueStr[:27] + "..."
+		valueStr := formatParamValue(value)
+		lines := splitIntoLines(fmt.Sprintf("%s: %s", key, valueStr), 37)
+		for i, line := range lines {
+			if i == 0 {
+				fmt.Fprintf(os.Stderr, "│   %-37s │\n", line)
+			} else {
+				fmt.Fprintf(os.Stderr, "│     %-35s │\n", line)
+			}
 		}
-		fmt.Fprintf(os.Stderr, "│ %s: %-30s │\n", key, valueStr)
+	}
+
+	// Show files affected if path parameter exists
+	if path, ok := params["path"].(string); ok {
+		fmt.Fprintf(os.Stderr, "├─────────────────────────────────────────┤\n")
+		fmt.Fprintf(os.Stderr, "│ Files affected: %-23s │\n", truncate(path, 23))
 	}
 
 	fmt.Fprintf(os.Stderr, "└─────────────────────────────────────────┘\n")
@@ -64,6 +85,75 @@ func PromptForApproval(toolName string, params map[string]interface{}) (Approval
 		fmt.Fprintf(os.Stderr, "Invalid response. Defaulting to 'no'.\n")
 		return ApprovalResponseNo, nil
 	}
+}
+
+// formatRiskLevel formats risk level with appropriate label
+func formatRiskLevel(level types.RiskLevel) string {
+	switch level {
+	case types.RiskLevelReadOnly:
+		return "read_only"
+	case types.RiskLevelSafeWrite:
+		return "safe_write"
+	case types.RiskLevelDangerous:
+		return "dangerous"
+	default:
+		return "unknown"
+	}
+}
+
+// formatParamValue formats a parameter value for display
+func formatParamValue(value interface{}) string {
+	switch v := value.(type) {
+	case string:
+		if len(v) > 100 {
+			return v[:97] + "..."
+		}
+		return v
+	case float64:
+		return fmt.Sprintf("%.0f", v)
+	case bool:
+		return fmt.Sprintf("%v", v)
+	default:
+		// For complex types, use JSON
+		data, err := json.Marshal(v)
+		if err != nil {
+			return fmt.Sprintf("%v", v)
+		}
+		str := string(data)
+		if len(str) > 100 {
+			return str[:97] + "..."
+		}
+		return str
+	}
+}
+
+// splitIntoLines splits a string into lines of maximum width
+func splitIntoLines(s string, maxWidth int) []string {
+	if len(s) <= maxWidth {
+		return []string{s}
+	}
+
+	var lines []string
+	for len(s) > 0 {
+		if len(s) <= maxWidth {
+			lines = append(lines, s)
+			break
+		}
+		lines = append(lines, s[:maxWidth])
+		s = s[maxWidth:]
+	}
+	return lines
+}
+
+// truncate truncates a string to maxLen, adding "..." if truncated
+func truncate(s string, maxLen int) string {
+	if len(s) <= maxLen {
+		return s
+	}
+	if maxLen < 3 {
+		return s[:maxLen]
+	}
+	return s[:maxLen-3] + "..."
 }
 
 // PromptYesNo asks a simple yes/no question

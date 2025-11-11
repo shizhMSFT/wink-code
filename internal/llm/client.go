@@ -9,6 +9,7 @@ import (
 
 	"github.com/sashabaranov/go-openai"
 	"github.com/shizhMSFT/wink-code/internal/logging"
+	"github.com/shizhMSFT/wink-code/internal/ui"
 	"github.com/shizhMSFT/wink-code/pkg/types"
 )
 
@@ -90,10 +91,18 @@ func (c *Client) ChatCompletion(ctx context.Context, messages []types.Message, t
 		Tools:    openaiTools,
 	}
 
+	// Start progress indicator
+	progress := ui.NewProgressIndicator("Waiting for LLM response")
+	progress.Start()
+	defer progress.Stop()
+
 	// Send request
 	startTime := time.Now()
 	resp, err := c.client.CreateChatCompletion(ctx, req)
 	duration := time.Since(startTime)
+
+	// Stop progress indicator before logging
+	progress.Stop()
 
 	if err != nil {
 		logging.Error("LLM API error",
