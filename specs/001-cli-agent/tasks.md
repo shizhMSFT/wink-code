@@ -208,7 +208,7 @@
 - [X] T084 [P] Add environment variable support in internal/config/config.go: WINK_MODEL, WINK_OLLAMA_URL, WINK_DEBUG
 - [X] T085 [P] Implement token usage tracking and reporting in internal/llm/client.go
 - [X] T086 [P] Add memory footprint monitoring in internal/agent/agent.go to validate ≤500MB target (Constitution: Performance)
-- [ ] T087 Add comprehensive integration test in tests/integration/session_continuation_test.go: create session, exit, continue, verify context preserved
+- [X] T087 Add comprehensive integration test in tests/integration/session_continuation_test.go: create session, exit, continue, verify context preserved
 - [ ] T088 Add cross-platform testing in CI for Windows/macOS/Linux builds with platform-specific shell commands
 - [X] T089 [P] Update specs/001-cli-agent/quickstart.md with complete examples for all 6 user stories
 - [X] T090 [P] Create build scripts in scripts/ for cross-platform binary compilation (Linux/Windows/macOS)
