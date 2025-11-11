@@ -120,13 +120,13 @@
 
 ### Implementation for User Story 3
 
-- [ ] T049 [US3] Implement "always" response handler in internal/tools/approval.go that generates regex pattern from tool + parameters
-- [ ] T050 [US3] Implement auto-approval rule persistence in internal/config/approval.go: save rule to config file, reload on next run
-- [ ] T051 [US3] Implement regex matching in internal/config/approval.go: match incoming tool call against stored patterns, handle specificity precedence
-- [ ] T052 [US3] Add auto-approval notification in internal/ui/output.go: "Auto-approved by rule: [description]"
-- [ ] T053 [US3] Add unit tests for auto-approval logic in tests/unit/approval_test.go: pattern generation, matching, precedence, edge cases (≥90% coverage)
-- [ ] T054 [US3] Add integration test in tests/integration/auto_approval_test.go: record rule via "always", verify auto-execution on next run
-- [ ] T055 [US3] Document config file format and manual editing in specs/001-cli-agent/quickstart.md Auto-Approval Configuration section
+- [X] T049 [US3] Implement "always" response handler in internal/tools/approval.go that generates regex pattern from tool + parameters
+- [X] T050 [US3] Implement auto-approval rule persistence in internal/config/approval.go: save rule to config file, reload on next run
+- [X] T051 [US3] Implement regex matching in internal/config/approval.go: match incoming tool call against stored patterns, handle specificity precedence
+- [X] T052 [US3] Add auto-approval notification in internal/ui/output.go: "Auto-approved by rule: [description]"
+- [X] T053 [US3] Add unit tests for auto-approval logic in tests/unit/approval_test.go: pattern generation, matching, precedence, edge cases (≥90% coverage)
+- [X] T054 [US3] Add integration test in tests/integration/auto_approval_test.go: record rule via "always", verify auto-execution on next run
+- [X] T055 [US3] Document config file format and manual editing in specs/001-cli-agent/quickstart.md Auto-Approval Configuration section
 
 **Delivery**: After T055, users can configure auto-approval for trusted operations, improving productivity.
 
@@ -140,13 +140,13 @@
 
 ### Implementation for User Story 4
 
-- [ ] T056 [P] [US4] Implement file_search tool in internal/tools/search.go with glob pattern matching, path filtering per contracts/tools-api.md
-- [ ] T057 [P] [US4] Implement grep_search tool in internal/tools/search.go with regex support, line number reporting, result limiting per contracts/tools-api.md
-- [ ] T058 [US4] Register search tools (file_search, grep_search) in internal/tools/registry.go with appropriate risk levels (read_only)
-- [ ] T059 [US4] Update read_file tool to handle large file streaming for files >10MB in internal/tools/file.go (performance optimization)
-- [ ] T060 [US4] Add unit tests for search tools in tests/unit/search_tools_test.go: glob patterns, regex, result limits, edge cases (≥90% coverage)
-- [ ] T061 [US4] Add integration test in tests/integration/search_test.go: multi-file search, grep with context, combination workflows
-- [ ] T062 [US4] Add -d/--debug logging for search operations showing patterns, match counts, performance metrics
+- [X] T056 [P] [US4] Implement file_search tool in internal/tools/search.go with glob pattern matching, path filtering per contracts/tools-api.md
+- [X] T057 [P] [US4] Implement grep_search tool in internal/tools/search.go with regex support, line number reporting, result limiting per contracts/tools-api.md
+- [X] T058 [US4] Register search tools (file_search, grep_search) in internal/tools/registry.go with appropriate risk levels (read_only)
+- [X] T059 [US4] Update read_file tool to handle large file streaming for files >10MB in internal/tools/file.go (performance optimization)
+- [X] T060 [US4] Add unit tests for search tools in tests/unit/search_tools_test.go: glob patterns, regex, result limits, edge cases (≥90% coverage)
+- [X] T061 [US4] Add integration test in tests/integration/search_test.go: multi-file search, grep with context, combination workflows
+- [X] T062 [US4] Add -d/--debug logging for search operations showing patterns, match counts, performance metrics
 
 **Delivery**: After T062, wink can search and analyze codebases through natural language queries.
 

@@ -159,7 +159,19 @@ func registerTools(a *agent.Agent) error {
 		return fmt.Errorf("failed to register list_dir tool: %w", err)
 	}
 
-	logging.Debug("Registered tools", "count", 5)
+	// Register file_search tool
+	fileSearch := tools.NewFileSearchTool()
+	if err := a.RegisterTool(fileSearch); err != nil {
+		return fmt.Errorf("failed to register file_search tool: %w", err)
+	}
+
+	// Register grep_search tool
+	grepSearch := tools.NewGrepSearchTool()
+	if err := a.RegisterTool(grepSearch); err != nil {
+		return fmt.Errorf("failed to register grep_search tool: %w", err)
+	}
+
+	logging.Debug("Registered tools", "count", 7)
 
 	return nil
 }
