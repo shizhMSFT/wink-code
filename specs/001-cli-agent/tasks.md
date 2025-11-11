@@ -201,17 +201,17 @@
 
 ### Implementation
 
-- [ ] T080 [P] Implement session loading in internal/agent/session.go: read from ~/.wink/sessions/{id}.json, restore context
-- [ ] T081 [P] Implement --continue flag handling in cmd/wink/main.go: find latest session, load, resume conversation
-- [ ] T082 [P] Implement session pruning in internal/agent/context.go: keep last 100 messages, archive older messages
-- [ ] T083 [P] Add session ID display and continuation instructions in internal/ui/output.go
-- [ ] T084 [P] Add environment variable support in internal/config/config.go: WINK_MODEL, WINK_OLLAMA_URL, WINK_DEBUG
-- [ ] T085 [P] Implement token usage tracking and reporting in internal/llm/client.go
-- [ ] T086 [P] Add memory footprint monitoring in internal/agent/agent.go to validate ≤500MB target (Constitution: Performance)
+- [X] T080 [P] Implement session loading in internal/agent/session.go: read from ~/.wink/sessions/{id}.json, restore context
+- [X] T081 [P] Implement --continue flag handling in cmd/wink/main.go: find latest session, load, resume conversation
+- [X] T082 [P] Implement session pruning in internal/agent/context.go: keep last 100 messages, archive older messages
+- [X] T083 [P] Add session ID display and continuation instructions in internal/ui/output.go
+- [X] T084 [P] Add environment variable support in internal/config/config.go: WINK_MODEL, WINK_OLLAMA_URL, WINK_DEBUG
+- [X] T085 [P] Implement token usage tracking and reporting in internal/llm/client.go
+- [X] T086 [P] Add memory footprint monitoring in internal/agent/agent.go to validate ≤500MB target (Constitution: Performance)
 - [ ] T087 Add comprehensive integration test in tests/integration/session_continuation_test.go: create session, exit, continue, verify context preserved
 - [ ] T088 Add cross-platform testing in CI for Windows/macOS/Linux builds with platform-specific shell commands
-- [ ] T089 [P] Update specs/001-cli-agent/quickstart.md with complete examples for all 6 user stories
-- [ ] T090 [P] Create build scripts in scripts/ for cross-platform binary compilation (Linux/Windows/macOS)
+- [X] T089 [P] Update specs/001-cli-agent/quickstart.md with complete examples for all 6 user stories
+- [X] T090 [P] Create build scripts in scripts/ for cross-platform binary compilation (Linux/Windows/macOS)
 - [ ] T091 Run full test suite and validate all constitution requirements: ≥90% coverage, cyclomatic complexity ≤10, performance targets met
 - [ ] T092 Create release artifacts: binaries, README, LICENSE, installation instructions
 

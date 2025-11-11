@@ -498,7 +498,7 @@ func (t *ReplaceStringInFileTool) Execute(ctx context.Context, params map[string
 			Success:         false,
 			Error:           errMsg,
 			ExecutionTimeMs: time.Since(startTime).Milliseconds(),
-		}, fmt.Errorf(errMsg)
+		}, fmt.Errorf("%s", errMsg)
 	}
 
 	// Count occurrences

@@ -57,6 +57,13 @@ integration with a safe approval workflow.`,
 }
 
 func run(cmd *cobra.Command, args []string) error {
+	// Check for debug flag from environment variable if not set via flag
+	if !debugFlag {
+		if os.Getenv("WINK_DEBUG") == "1" || os.Getenv("WINK_DEBUG") == "true" {
+			debugFlag = true
+		}
+	}
+
 	// Initialize logger
 	logging.InitLogger(debugFlag)
 

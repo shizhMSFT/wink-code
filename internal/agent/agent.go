@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"runtime"
 	"time"
 
 	"github.com/shizhMSFT/wink-code/internal/llm"
@@ -223,6 +224,21 @@ func (a *Agent) Run(ctx context.Context, prompt string, workingDir string, conti
 	// Display session info
 	formatter := ui.NewFormatter(types.OutputFormatHuman)
 	ui.PrintInfo(formatter.FormatSessionInfo(session.ID, len(session.Messages)))
+
+	// Display token usage
+	totalTokens, promptTokens, completionTokens := a.llmClient.GetTokenUsage()
+	if totalTokens > 0 {
+		ui.PrintInfo(fmt.Sprintf("Token usage: %d total (%d prompt, %d completion)", totalTokens, promptTokens, completionTokens))
+	}
+
+	// Display memory usage
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	memUsageMB := m.Alloc / 1024 / 1024
+	logging.Debug("Memory usage", "alloc_mb", memUsageMB, "sys_mb", m.Sys/1024/1024)
+	if memUsageMB > 500 {
+		logging.Warn("Memory usage exceeds target", "alloc_mb", memUsageMB, "target_mb", 500)
+	}
 
 	return nil
 }

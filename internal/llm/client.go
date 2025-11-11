@@ -15,9 +15,12 @@ import (
 
 // Client wraps the OpenAI client for Ollama
 type Client struct {
-	client  *openai.Client
-	model   string
-	timeout time.Duration
+	client           *openai.Client
+	model            string
+	timeout          time.Duration
+	totalTokens      int
+	promptTokens     int
+	completionTokens int
 }
 
 // NewClient creates a new LLM client pointing to Ollama
@@ -26,9 +29,12 @@ func NewClient(baseURL, model string, timeoutSeconds int) *Client {
 	config.BaseURL = baseURL + "/v1"
 
 	return &Client{
-		client:  openai.NewClientWithConfig(config),
-		model:   model,
-		timeout: time.Duration(timeoutSeconds) * time.Second,
+		client:           openai.NewClientWithConfig(config),
+		model:            model,
+		timeout:          time.Duration(timeoutSeconds) * time.Second,
+		totalTokens:      0,
+		promptTokens:     0,
+		completionTokens: 0,
 	}
 }
 
@@ -120,12 +126,22 @@ func (c *Client) ChatCompletion(ctx context.Context, messages []types.Message, t
 		"total_tokens", resp.Usage.TotalTokens,
 	)
 
+	// Track token usage
+	c.totalTokens += resp.Usage.TotalTokens
+	c.promptTokens += resp.Usage.PromptTokens
+	c.completionTokens += resp.Usage.CompletionTokens
+
 	return &resp, nil
 }
 
 // Model returns the model name being used
 func (c *Client) Model() string {
 	return c.model
+}
+
+// GetTokenUsage returns cumulative token usage statistics
+func (c *Client) GetTokenUsage() (total, prompt, completion int) {
+	return c.totalTokens, c.promptTokens, c.completionTokens
 }
 
 // mustMarshalJSON marshals to JSON string, panics on error (should never happen with valid data)
