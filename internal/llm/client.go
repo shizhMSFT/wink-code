@@ -3,6 +3,7 @@ package llm
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -120,7 +121,12 @@ func (c *Client) Model() string {
 
 // mustMarshalJSON marshals to JSON string, panics on error (should never happen with valid data)
 func mustMarshalJSON(v interface{}) string {
-	// OpenAI SDK expects JSON string
-	// For now, use a simple formatter - in production would use proper JSON marshaling
-	return fmt.Sprintf("%v", v)
+	// OpenAI SDK expects JSON string for function arguments
+	data, err := json.Marshal(v)
+	if err != nil {
+		// This should never happen with valid tool parameters
+		logging.Error("Failed to marshal tool parameters to JSON", "error", err)
+		return "{}"
+	}
+	return string(data)
 }

@@ -117,7 +117,7 @@ func (t *CreateFileTool) Execute(ctx context.Context, params map[string]interfac
 			Success:         false,
 			Error:           errMsg,
 			ExecutionTimeMs: time.Since(startTime).Milliseconds(),
-		}, fmt.Errorf(errMsg)
+		}, fmt.Errorf("failed to create directory '%s': %w", dir, err)
 	}
 
 	// Write file
@@ -127,7 +127,7 @@ func (t *CreateFileTool) Execute(ctx context.Context, params map[string]interfac
 			Success:         false,
 			Error:           errMsg,
 			ExecutionTimeMs: time.Since(startTime).Milliseconds(),
-		}, fmt.Errorf(errMsg)
+		}, fmt.Errorf("failed to write file '%s': %w", path, err)
 	}
 
 	// Get file info for result

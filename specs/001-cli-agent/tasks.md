@@ -75,8 +75,8 @@
 - [X] T027 [US1] Implement internal/agent/agent.go core orchestration: accept prompt, call LLM with tools, handle tool calls, return results
 - [X] T028 [US1] Wire up cobra command in cmd/wink/main.go to call agent with prompt from -p flag
 - [X] T029 [US1] Add integration test in tests/integration/quick_script_test.go for end-to-end script generation workflow
-- [ ] T030 [US1] Add error handling for LLM unreachable, invalid prompts, file creation failures with user-friendly messages (Constitution: UX Consistency)
-- [ ] T031 [US1] Validate startup time ≤500ms and tool execution overhead <100ms with benchmarks in tests/integration/benchmark_test.go (Constitution: Performance)
+- [X] T030 [US1] Add error handling for LLM unreachable, invalid prompts, file creation failures with user-friendly messages (Constitution: UX Consistency)
+- [X] T031 [US1] Validate startup time ≤500ms and tool execution overhead <100ms with benchmarks in tests/integration/benchmark_test.go (Constitution: Performance)
 
 **MVP Delivery**: After T031, wink can generate files from natural language prompts with approval workflow. This is independently deployable.
 
