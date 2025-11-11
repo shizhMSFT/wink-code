@@ -258,6 +258,10 @@ Approve? (y/n/always):
 - Each unique command requires separate approval
 - Approving `git status` does NOT auto-approve `git push`
 - Auto-approval rules match the specific command string
+- Commands execute in your default shell (PowerShell/bash/sh)
+- Working directory is set to your session's working directory
+- Output size limited to 100KB to prevent memory issues
+- Default timeout: 30 seconds (configurable per command)
 
 ### Auto-Approval Rules
 
@@ -303,6 +307,45 @@ vim ~/.wink/config.json
     }
   ]
 }
+```
+
+### Terminal Command Safety
+
+When using `run_in_terminal`:
+
+**✅ Safe Commands** (after verification):
+- Read-only operations: `git status`, `ls`, `cat file.txt`
+- Safe build/test commands: `npm test`, `go build`, `pytest`
+- Local info commands: `which python`, `node --version`
+
+**⚠️ Dangerous Commands** (require careful review):
+- Write operations: `rm`, `git push`, `npm publish`
+- System modifications: `sudo`, `chmod`, `install`
+- Network operations: `curl -X POST`, `ssh`, `wget`
+
+**Command-Level Approval Examples**:
+```bash
+# Approve once for testing
+wink -p "run git status"
+# Prompt: Approve? (y/n/always): y
+
+# Create auto-approval rule
+wink -p "run npm test"
+# Prompt: Approve? (y/n/always): always
+# Creates rule: {"command":"npm test"...}
+
+# Different command needs separate approval
+wink -p "run npm publish"
+# Prompt appears again (different command)
+```
+
+**Timeout Configuration**:
+```bash
+# Default 30s timeout
+wink -p "run long script.sh"
+
+# Custom timeout (up to 300s)
+# Specify in prompt: "run with 60s timeout: script.sh"
 ```
 
 ## Troubleshooting

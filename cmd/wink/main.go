@@ -171,7 +171,19 @@ func registerTools(a *agent.Agent) error {
 		return fmt.Errorf("failed to register grep_search tool: %w", err)
 	}
 
-	logging.Debug("Registered tools", "count", 7)
+	// Register run_in_terminal tool
+	runInTerminal := tools.NewRunInTerminalTool()
+	if err := a.RegisterTool(runInTerminal); err != nil {
+		return fmt.Errorf("failed to register run_in_terminal tool: %w", err)
+	}
+
+	// Register terminal_last_command tool
+	terminalLastCmd := tools.NewTerminalLastCommandTool()
+	if err := a.RegisterTool(terminalLastCmd); err != nil {
+		return fmt.Errorf("failed to register terminal_last_command tool: %w", err)
+	}
+
+	logging.Debug("Registered tools", "count", 9)
 
 	return nil
 }

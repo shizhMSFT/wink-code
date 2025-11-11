@@ -160,16 +160,16 @@
 
 ### Implementation for User Story 5
 
-- [ ] T063 [US5] Implement run_in_terminal tool in internal/tools/terminal.go with cross-platform shell detection (cmd/PowerShell/bash) per contracts/tools-api.md
-- [ ] T064 [US5] Implement command-level approval for run_in_terminal: regex matches specific command string, not just tool name, in internal/tools/approval.go
-- [ ] T065 [US5] Implement stdout/stderr capture in internal/tools/terminal.go with output size limits, timeout handling (30s default)
-- [ ] T066 [US5] Implement terminal_last_command tool in internal/tools/terminal.go with command history tracking per contracts/tools-api.md
-- [ ] T067 [US5] Register terminal tools (run_in_terminal, terminal_last_command) in internal/tools/registry.go with dangerous risk level
-- [ ] T068 [US5] Add input sanitization for shell commands in internal/tools/terminal.go: escape special characters per platform
-- [ ] T069 [US5] Add unit tests for terminal tools in tests/unit/terminal_tools_test.go: platform detection, command escaping, output capture (≥90% coverage)
-- [ ] T070 [US5] Add integration test in tests/integration/terminal_test.go: execute safe commands, verify approval required, test command-level auto-approval
-- [ ] T071 [US5] Add -d/--debug logging for command execution showing shell used, command sanitized, exit code, execution time
-- [ ] T072 [US5] Document command-level approval security model in specs/001-cli-agent/quickstart.md Safety Guidelines section
+- [X] T063 [US5] Implement run_in_terminal tool in internal/tools/terminal.go with cross-platform shell detection (cmd/PowerShell/bash) per contracts/tools-api.md
+- [X] T064 [US5] Implement command-level approval for run_in_terminal: regex matches specific command string, not just tool name, in internal/tools/approval.go
+- [X] T065 [US5] Implement stdout/stderr capture in internal/tools/terminal.go with output size limits, timeout handling (30s default)
+- [X] T066 [US5] Implement terminal_last_command tool in internal/tools/terminal.go with command history tracking per contracts/tools-api.md
+- [X] T067 [US5] Register terminal tools (run_in_terminal, terminal_last_command) in internal/tools/registry.go with dangerous risk level
+- [X] T068 [US5] Add input sanitization for shell commands in internal/tools/terminal.go: escape special characters per platform
+- [X] T069 [US5] Add unit tests for terminal tools in tests/unit/terminal_tools_test.go: platform detection, command escaping, output capture (≥90% coverage)
+- [X] T070 [US5] Add integration test in tests/integration/terminal_test.go: execute safe commands, verify approval required, test command-level auto-approval
+- [X] T071 [US5] Add -d/--debug logging for command execution showing shell used, command sanitized, exit code, execution time
+- [X] T072 [US5] Document command-level approval security model in specs/001-cli-agent/quickstart.md Safety Guidelines section
 
 **Delivery**: After T072, wink supports safe command execution with granular approval control.
 
