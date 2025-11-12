@@ -1,5 +1,4 @@
-// Package unit contains unit tests for internal packages
-package unit
+package ui_test
 
 import (
 	"testing"
