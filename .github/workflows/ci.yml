@@ -40,14 +40,80 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
       
-      - name: Run tests
-        run: go test -v -race -cover ./...
+      - name: Run unit tests
+        run: go test -v -race -cover ./tests/unit/...
+      
+      - name: Run integration tests
+        run: go test -v -race -cover ./tests/integration/...
       
       - name: Test coverage
         if: matrix.os == 'ubuntu-latest'
         run: |
           go test -race -coverprofile=coverage.out -covermode=atomic ./...
           go tool cover -func=coverage.out
+
+  platform-specific:
+    name: Platform-Specific Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      
+      - name: Test terminal commands (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "Testing bash shell commands..."
+          go test -v ./tests/integration/terminal_test.go -run TestTerminalWorkflow
+          go test -v ./tests/unit/terminal_tools_test.go -run TestShellDetection
+      
+      - name: Test terminal commands (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          echo "Testing bash/zsh shell commands..."
+          go test -v ./tests/integration/terminal_test.go -run TestTerminalWorkflow
+          go test -v ./tests/unit/terminal_tools_test.go -run TestShellDetection
+      
+      - name: Test terminal commands (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Write-Host "Testing PowerShell commands..."
+          go test -v ./tests/integration/terminal_test.go -run TestTerminalWorkflow
+          go test -v ./tests/unit/terminal_tools_test.go -run TestShellDetection
+      
+      - name: Verify cross-platform file paths
+        run: go test -v ./tests/unit/file_tools_test.go -run TestPathValidation
+
+  benchmark:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      
+      - name: Run benchmarks
+        run: |
+          echo "Running performance benchmarks..."
+          go test -v -bench=. -benchmem -run=^$ ./tests/integration/benchmark_test.go
+      
+      - name: Validate startup time
+        run: |
+          echo "Validating CLI startup time (<500ms requirement)..."
+          go test -v ./cmd/wink/timeout_test.go -run TestTimeout
 
   build:
     name: Build
