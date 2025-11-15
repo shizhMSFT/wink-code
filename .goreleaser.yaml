@@ -1,0 +1,37 @@
+# To release:
+#   git tag -a v0.1.0 -m "Release v0.1.0"
+#   git push origin v0.1.0
+#   GITHUB_TOKEN=*** goreleaser
+
+version: 2
+builds:
+  - main: ./cmd/wink
+    binary: wink
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      # one-line ldflags to bypass the goreleaser bugs
+      # the git tree state is guaranteed to be clean by goreleaser
+      - -w -s -buildid= -X main.Version={{.Version}} -X main.BuildTime={{.CommitTimestamp}}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - format: tar.gz
+    files:
+      - LICENSE
+    format_overrides:
+      - goos: windows
+        format: zip
+
+release:
+  draft: true
+  prerelease: auto
