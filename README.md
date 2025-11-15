@@ -1,5 +1,8 @@
 # Wink CLI Coding Agent
 
+> [!CAUTION]
+> **Experimental AI-Generated Project**: This tool executes commands and modifies files on your system. The codebase itself was AI-generated and is experimental, created for learning and exploration purposes. Always review actions before approval and use in a safe environment (e.g., version-controlled projects). No warranty or support is provided.
+
 A lightweight CLI coding agent that connects to local LLMs (via Ollama) for rapid script generation and coding assistance.
 
 ## Features
